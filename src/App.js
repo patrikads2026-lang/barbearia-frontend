@@ -95,7 +95,7 @@ function CTA({ onAgendar }) {
 export default function App() {
   const [pagina, setPagina] = useState("home");
 
-  if (pagina === "agendar") return <Agendamento onVoltar={() => setPagina("home")} />;
+  if (pagina === "agendar") return <Agendamento onVoltar={() => { setPagina("home"); window.scrollTo({ top: 0, behavior: "smooth" }); }} />;
   if (pagina === "painel") return <Painel onVoltar={() => setPagina("home")} />;
 
   return (
