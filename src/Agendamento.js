@@ -29,7 +29,7 @@ function getProximos7Dias() {
   return dias;
 }
 
-export default function Agendamento() {
+export default function Agendamento({ onVoltar }) {
   const [passo, setPasso] = useState(1);
   const [form, setForm] = useState({ servico: "", barbeiro: "", horario: "", data: "", nome: "", telefone: "" });
   const [confirmado, setConfirmado] = useState(false);
@@ -94,6 +94,9 @@ export default function Agendamento() {
   return (
     <div className="ag-wrap">
       <div className="ag-card">
+        <button onClick={onVoltar} className="ag-btn-back" style={{ marginBottom: "16px" }}>
+          ← Voltar ao Menu
+        </button>
         <h1 className="ag-title">Agendar Horário</h1>
 
         <div className="ag-steps">
