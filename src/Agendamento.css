@@ -1,0 +1,310 @@
+.ag-wrap {
+  min-height: 100vh;
+  background: #0a0a0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  font-family: 'airbnb--light', sans-serif;
+}
+
+.ag-card {
+  background: #111;
+  border: 1px solid #222;
+  border-radius: 16px;
+  padding: 40px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.ag-title {
+  font-family: 'airbnb--bold', sans-serif;
+  color: #fff;
+  font-size: 2rem;
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.ag-steps {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.ag-steps::before {
+  content: '';
+  position: absolute;
+  top: 16px;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: #222;
+}
+
+.ag-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  z-index: 1;
+}
+
+.ag-step-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #222;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.ag-step.active .ag-step-num { background: #fff; color: #000; }
+.ag-step.done .ag-step-num { background: #10b981; color: #fff; }
+.ag-step span { font-size: 0.75rem; color: #666; }
+.ag-step.active span { color: #fff; }
+
+.ag-passo h2 { color: #fff; margin-bottom: 24px; font-family: 'airbnb--bold', sans-serif; }
+
+.ag-opcoes { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+
+.ag-opcao {
+  flex: 1;
+  min-width: 140px;
+  background: #1a1a1a;
+  border: 2px solid #222;
+  border-radius: 12px;
+  padding: 20px 16px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.ag-opcao:hover { border-color: #444; }
+.ag-opcao.selected { border-color: #fff; background: #1f1f1f; }
+.ag-opcao strong { color: #fff; }
+.ag-opcao span { color: #10b981; font-weight: bold; }
+.ag-opcao small { color: #666; }
+
+.ag-barbeiro { align-items: center; }
+.ag-avatar {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: #333;
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; font-weight: bold;
+}
+
+.ag-input {
+  width: 100%;
+  background: #1a1a1a;
+  border: 2px solid #222;
+  border-radius: 10px;
+  padding: 14px 16px;
+  color: #fff;
+  font-size: 1rem;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+  outline: none;
+  transition: border 0.2s;
+}
+.ag-input:focus { border-color: #fff; }
+
+.ag-horarios {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.ag-hora {
+  padding: 10px 16px;
+  background: #1a1a1a;
+  border: 2px solid #222;
+  border-radius: 8px;
+  color: #ccc;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+}
+.ag-hora:hover { border-color: #444; color: #fff; }
+.ag-hora.selected { border-color: #fff; color: #fff; background: #222; }
+
+.ag-nav { display: flex; gap: 12px; }
+
+.ag-btn {
+  flex: 1;
+  background: #fff;
+  color: #000;
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.ag-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.ag-btn:hover:not(:disabled) { opacity: 0.85; }
+
+.ag-btn-back {
+  background: transparent;
+  color: #666;
+  border: 2px solid #222;
+  border-radius: 10px;
+  padding: 14px 20px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+.ag-btn-back:hover { border-color: #444; color: #fff; }
+
+.ag-resumo-final {
+  background: #1a1a1a;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+.ag-resumo-final p { color: #ccc; margin: 4px 0; }
+.ag-resumo-final strong { color: #fff; }
+
+/* Sucesso */
+.ag-sucesso { text-align: center; }
+.ag-check {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: #10b981;
+  color: #fff;
+  font-size: 2rem;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 24px;
+}
+.ag-sucesso h2 { color: #fff; margin-bottom: 8px; }
+.ag-sucesso p { color: #888; margin-bottom: 24px; }
+.ag-resumo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #1a1a1a;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+.ag-resumo span { color: #ccc; }
+
+/* Botões de dia */
+.ag-dias {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.ag-dia {
+  flex: 1;
+  min-width: 64px;
+  background: #1a1a1a;
+  border: 2px solid #222;
+  border-radius: 12px;
+  padding: 14px 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s;
+}
+.ag-dia:hover { border-color: #444; }
+.ag-dia.selected { border-color: #fff; background: #222; }
+
+.ag-dia-semana { font-size: 0.75rem; color: #666; text-transform: uppercase; }
+.ag-dia-num { font-size: 1.4rem; font-weight: bold; color: #fff; line-height: 1; }
+.ag-dia-mes { font-size: 0.75rem; color: #888; }
+.ag-dia.selected .ag-dia-semana { color: #aaa; }
+.ag-dia.selected .ag-dia-mes { color: #aaa; }
+
+/* Horário ocupado */
+.ag-hora.ocupado {
+  opacity: 0.35;
+  cursor: not-allowed;
+  border-color: #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.ag-hora.ocupado small { font-size: 0.6rem; color: #ef4444; }
+
+/* ── RESPONSIVO CELULAR ── */
+@media (max-width: 600px) {
+    .ag-card {
+        padding: 24px 16px;
+    }
+
+    .ag-title {
+        font-size: 1.5rem;
+    }
+
+    .ag-steps {
+        gap: 4px;
+    }
+
+    .ag-step span {
+        font-size: 0.65rem;
+    }
+
+    .ag-opcoes {
+        flex-direction: column;
+    }
+
+    .ag-opcao {
+        min-width: unset;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 16px;
+    }
+
+    .ag-barbeiro {
+        flex-direction: row !important;
+        gap: 12px;
+    }
+
+    .ag-dias {
+        gap: 6px;
+    }
+
+    .ag-dia {
+        min-width: 44px;
+        padding: 10px 4px;
+    }
+
+    .ag-dia-num {
+        font-size: 1.1rem;
+    }
+
+    .ag-horarios {
+        gap: 8px;
+    }
+
+    .ag-hora {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+    }
+
+    .ag-nav {
+        flex-direction: column;
+    }
+
+    .ag-btn-back {
+        width: 100%;
+    }
+}
