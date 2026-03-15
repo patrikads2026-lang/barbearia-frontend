@@ -1,5 +1,4 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react';
+import React, { useState } from 'react';
 import "./App.css";
 import Agendamento from "./Agendamento";
 import Painel from "./Painel";
