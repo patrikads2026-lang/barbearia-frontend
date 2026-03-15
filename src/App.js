@@ -4,7 +4,7 @@ import "./App.css";
 import Agendamento from "./Agendamento";
 import Painel from "./Painel";
 
-function Menu({ onAgendar }) {
+function Menu({ onAgendar }){ 
   return (
     <div className="menu">
       <div className="menu--1">
@@ -13,6 +13,7 @@ function Menu({ onAgendar }) {
       <div className="menu--2">
         <a href="#inicio">Início</a>
         <a href="#servicos">Serviços</a>
+      </div>  
       <div className="menu--3">
         <button onClick={onAgendar}>Agendar</button>
       </div>
