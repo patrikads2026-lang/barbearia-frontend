@@ -12,7 +12,7 @@ function Menu({ onAgendar }) {
       </div>
       <div className="menu--2">
         <a href="#inicio">Início</a>
-        <button onClick={onAgendar} style={{ cursor: "pointer" }}>Agendamento</button>
+        <a href="#servicos">Serviços</a>
       <div className="menu--3">
         <button onClick={onAgendar}>Agendar</button>
       </div>
