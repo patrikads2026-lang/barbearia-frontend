@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./Agendamento.css";
 
-const API = "http://localhost:4000";
+const API = "https://barbearia-backend-iiyz.onrender.com";
 
 const barbeiros = ["Carlos", "Diego", "Rafael"];
 const servicos = [

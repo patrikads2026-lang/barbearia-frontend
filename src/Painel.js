@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./Painel.css";
 
-const API = "http://localhost:4000";
+const API = "https://barbearia-backend-iiyz.onrender.com";
 const SENHA = "barbearia123";
 
 export default function Painel() {
