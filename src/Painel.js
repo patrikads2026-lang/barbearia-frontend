@@ -14,8 +14,7 @@ export default function Painel() {
   const [novoBloqueio, setNovoBloqueio] = useState({ data: "", hora: "" });
   const [barbeiros, setBarbeiros] = useState(() => {
     const salvo = localStorage.getItem("barbeiros");
-    return salvo ? JSON.parse(salvo) : ["Carlos", "Diego", "Rafael"];
-  });
+   const [barbeiros, setBarbeiros] = useState(["Carlos", "Thiago", "Adriano"]);
   const [novoBarbeiro, setNovoBarbeiro] = useState("");
   const [editando, setEditando] = useState(null);
   const [nomeEditado, setNomeEditado] = useState("");
@@ -25,7 +24,7 @@ export default function Painel() {
   }, [logado]);
 
   useEffect(() => {
-    localStorage.setItem("barbeiros", JSON.stringify(barbeiros));
+   // localStorage.setItem("barbeiros", JSON.stringify(barbeiros)); 
   }, [barbeiros]);
 
   async function buscarAgendamentos() {
