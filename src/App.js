@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from 'react';
 import "./App.css";
 import Agendamento from "./Agendamento";
@@ -11,7 +12,7 @@ function Menu({ onAgendar }) {
       </div>
       <div className="menu--2">
         <a href="#inicio">Início</a>
-        <a href="#servicos">Serviços</a>
+        <button onClick={onAgendar} style={{ cursor: "pointer" }}>Agendamento</button>
         <a href="#" onClick={onAgendar} style={{ cursor: "pointer" }}>Agendamento</a>
       </div>
       <div className="menu--3">
@@ -58,7 +59,7 @@ function Sobre({ onAgendar }) {
           <h2>Sobre a Bigode Cort's</h2>
           <p>Somos especialistas em cortes masculinos e cuidados com a barba. Nosso objetivo é oferecer uma experiência premium para cada cliente.</p>
           <p>Ambiente moderno, profissionais qualificados e atendimento de qualidade.</p>
-          <a href="#"onClick={onAgendar} className="btn" style={{ cursor: "pointer" }}>Agendar Horário</a>
+          <button onClick={onAgendar} className="btn" style={{ cursor: "pointer" }}>Agendar Horário</button>
         </div>
       </div>
     </section>
@@ -85,7 +86,7 @@ function CTA({ onAgendar }) {
       <div className="container">
         <h2>Pronto para renovar o visual?</h2>
         <p>Agende agora seu horário na Bigode Cort's</p>
-        <a href="#" onClick={onAgendar} className="btn-agendar" style={{ cursor: "pointer" }}>Agendar Agora</a>
+        <button onClick={onAgendar} className="btn-agendar" style={{ cursor: "pointer" }}>Agendar Agora</button>
       </div>
     </section>
   );
