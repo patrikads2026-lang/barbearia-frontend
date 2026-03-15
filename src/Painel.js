@@ -12,19 +12,30 @@ export default function Painel() {
   const [aba, setAba] = useState("hoje");
   const [bloqueios, setBloqueios] = useState([]);
   const [novoBloqueio, setNovoBloqueio] = useState({ data: "", hora: "" });
+  const [barbeiros, setBarbeiros] = useState(() => {
+    const salvo = localStorage.getItem("barbeiros");
+    return salvo ? JSON.parse(salvo) : ["Carlos", "Diego", "Rafael"];
+  });
+  const [novoBarbeiro, setNovoBarbeiro] = useState("");
+  const [editando, setEditando] = useState(null);
+  const [nomeEditado, setNomeEditado] = useState("");
 
   useEffect(() => {
     if (logado) { buscarAgendamentos(); buscarBloqueios(); }
   }, [logado]);
 
+  useEffect(() => {
+    localStorage.setItem("barbeiros", JSON.stringify(barbeiros));
+  }, [barbeiros]);
+
   async function buscarAgendamentos() {
-    const res = await fetch(`${API}/api/agendamentos`);
+    const res = await fetch(${API}/api/agendamentos);
     const dados = await res.json();
     setAgendamentos(dados);
   }
 
   async function buscarBloqueios() {
-    const res = await fetch(`${API}/api/bloqueios`);
+    const res = await fetch(${API}/api/bloqueios);
     const dados = await res.json();
     setBloqueios(dados);
   }
@@ -35,7 +46,7 @@ export default function Painel() {
   }
 
   async function mudarStatus(id, status) {
-    await fetch(`${API}/api/agendamentos/${id}`, {
+    await fetch(${API}/api/agendamentos/${id}, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status }),
@@ -45,7 +56,7 @@ export default function Painel() {
 
   async function adicionarBloqueio() {
     if (!novoBloqueio.data || !novoBloqueio.hora) return;
-    await fetch(`${API}/api/bloqueios`, {
+    await fetch(${API}/api/bloqueios, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(novoBloqueio),
@@ -55,8 +66,25 @@ export default function Painel() {
   }
 
   async function removerBloqueio(id) {
-    await fetch(`${API}/api/bloqueios/${id}`, { method: "DELETE" });
+    await fetch(${API}/api/bloqueios/${id}, { method: "DELETE" });
     buscarBloqueios();
+  }
+
+  function adicionarBarbeiro() {
+    if (!novoBarbeiro.trim()) return;
+    setBarbeiros(prev => [...prev, novoBarbeiro.trim()]);
+    setNovoBarbeiro("");
+  }
+
+  function removerBarbeiro(nome) {
+    setBarbeiros(prev => prev.filter(b => b !== nome));
+  }
+
+  function salvarEdicao(nomeAntigo) {
+    if (!nomeEditado.trim()) return;
+    setBarbeiros(prev => prev.map(b => b === nomeAntigo ? nomeEditado.trim() : b));
+    setEditando(null);
+    setNomeEditado("");
   }
 
   const hoje = new Date().toISOString().split("T")[0];
@@ -90,12 +118,13 @@ export default function Painel() {
           <div className="stat"><span>{agendamentos.length}</span><p>Total</p></div>
         </div>
         <div className="painel-abas">
-          {["hoje", "historico", "bloquear"].map(a => (
-            <button key={a} className={`painel-aba ${aba === a ? "active" : ""}`} onClick={() => setAba(a)}>
-              {a === "hoje" ? "📅 Hoje" : a === "historico" ? "📋 Histórico" : "🚫 Bloquear"}
+          {["hoje", "historico", "bloquear", "barbeiros"].map(a => (
+            <button key={a} className={painel-aba ${aba === a ? "active" : ""}} onClick={() => setAba(a)}>
+              {a === "hoje" ? "📅 Hoje" : a === "historico" ? "📋 Histórico" : a === "bloquear" ? "🚫 Bloquear" : "💈 Barbeiros"}
             </button>
           ))}
         </div>
+
         {aba === "hoje" && (
           <div className="painel-lista">
             {agHoje.length === 0 ? <p className="painel-vazio">Nenhum agendamento para hoje.</p> : agHoje.map(a => (
@@ -116,6 +145,7 @@ export default function Painel() {
             ))}
           </div>
         )}
+
         {aba === "historico" && (
           <div className="painel-lista">
             {agTodos.length === 0 ? <p className="painel-vazio">Nenhum agendamento ainda.</p> : agTodos.map(a => (
@@ -132,6 +162,7 @@ export default function Painel() {
             ))}
           </div>
         )}
+
         {aba === "bloquear" && (
           <div>
             <div className="painel-bloquear-form">
@@ -149,6 +180,37 @@ export default function Painel() {
             </div>
           </div>
         )}
+
+        {aba === "barbeiros" && (
+          <div>
+            <div className="painel-bloquear-form">
+              <input className="painel-input" placeholder="Nome do novo barbeiro" value={novoBarbeiro} onChange={e => setNovoBarbeiro(e.target.value)} />
+              <button className="painel-btn" onClick={adicionarBarbeiro}>Adicionar</button>
+            </div>
+            <div className="painel-lista">
+              {barbeiros.map(b => (
+                <div key={b} className="painel-item">
+                  {editando === b ? (
+                    <>
+                      <input className="painel-input" value={nomeEditado} onChange={e => setNomeEditado(e.target.value)} />
+                      <button className="btn-confirmar" onClick={() => salvarEdicao(b)}>✓</button>
+                      <button className="btn-cancelar" onClick={() => setEditando(null)}>✗</button>
+                    </>
+                  ) : (
+                    <>
+                      <span>💈 {b}</span>
+                      <div className="painel-item-acoes">
+                        <button className="btn-confirmar" onClick={() => { setEditando(b); setNomeEditado(b); }}>✏️</button>
+                        <button className="btn-cancelar" onClick={() => removerBarbeiro(b)}>✗</button>
+                      </div>
+                    </>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
       </div>
     </div>
   );
