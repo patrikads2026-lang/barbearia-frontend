@@ -12,7 +12,7 @@ function Menu({ onAgendar }) {
       <div className="menu--2">
         <a href="#inicio">Início</a>
         <a href="#servicos">Serviços</a>
-        <a onClick={onAgendar} style={{ cursor: "pointer" }}>Agendamento</a>
+        <a href="#" onClick={onAgendar} style={{ cursor: "pointer" }}>Agendamento</a>
       </div>
       <div className="menu--3">
         <button onClick={onAgendar}>Agendar</button>
@@ -58,7 +58,7 @@ function Sobre({ onAgendar }) {
           <h2>Sobre a Bigode Cort's</h2>
           <p>Somos especialistas em cortes masculinos e cuidados com a barba. Nosso objetivo é oferecer uma experiência premium para cada cliente.</p>
           <p>Ambiente moderno, profissionais qualificados e atendimento de qualidade.</p>
-          <a onClick={onAgendar} className="btn" style={{ cursor: "pointer" }}>Agendar Horário</a>
+          <a href="#"onClick={onAgendar} className="btn" style={{ cursor: "pointer" }}>Agendar Horário</a>
         </div>
       </div>
     </section>
@@ -85,7 +85,7 @@ function CTA({ onAgendar }) {
       <div className="container">
         <h2>Pronto para renovar o visual?</h2>
         <p>Agende agora seu horário na Bigode Cort's</p>
-        <a onClick={onAgendar} className="btn-agendar" style={{ cursor: "pointer" }}>Agendar Agora</a>
+        <a href="#" onClick={onAgendar} className="btn-agendar" style={{ cursor: "pointer" }}>Agendar Agora</a>
       </div>
     </section>
   );
