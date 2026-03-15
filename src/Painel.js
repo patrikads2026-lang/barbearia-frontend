@@ -12,9 +12,7 @@ export default function Painel() {
   const [aba, setAba] = useState("hoje");
   const [bloqueios, setBloqueios] = useState([]);
   const [novoBloqueio, setNovoBloqueio] = useState({ data: "", hora: "" });
-  const [barbeiros, setBarbeiros] = useState(() => {
-    const salvo = localStorage.getItem("barbeiros");
-   const [barbeiros, setBarbeiros] = useState(["Carlos", "Thiago", "Adriano"]);
+  const [barbeiros, setBarbeiros] = useState(["Carlos", "Diego", "Rafael"]);
   const [novoBarbeiro, setNovoBarbeiro] = useState("");
   const [editando, setEditando] = useState(null);
   const [nomeEditado, setNomeEditado] = useState("");
@@ -22,10 +20,6 @@ export default function Painel() {
   useEffect(() => {
     if (logado) { buscarAgendamentos(); buscarBloqueios(); }
   }, [logado]);
-
-  useEffect(() => {
-   // localStorage.setItem("barbeiros", JSON.stringify(barbeiros)); 
-  }, [barbeiros]);
 
   async function buscarAgendamentos() {
     const res = await fetch(${API}/api/agendamentos);
@@ -94,7 +88,7 @@ export default function Painel() {
   if (!logado) return (
     <div className="painel-wrap">
       <div className="painel-login">
-        <h1>🔐 Painel do Barbeiro</h1>
+        <h1>Painel do Barbeiro</h1>
         <p>Acesso restrito</p>
         <input className="painel-input" type="password" placeholder="Senha" value={senha} onChange={e => setSenha(e.target.value)} onKeyDown={e => e.key === "Enter" && login()} />
         {erro && <p className="painel-erro">{erro}</p>}
@@ -107,7 +101,7 @@ export default function Painel() {
     <div className="painel-wrap">
       <div className="painel-container">
         <div className="painel-header">
-          <h1>✂ Painel do Barbeiro</h1>
+          <h1>Painel do Barbeiro</h1>
           <button className="painel-sair" onClick={() => setLogado(false)}>Sair</button>
         </div>
         <div className="painel-stats">
@@ -119,40 +113,38 @@ export default function Painel() {
         <div className="painel-abas">
           {["hoje", "historico", "bloquear", "barbeiros"].map(a => (
             <button key={a} className={painel-aba ${aba === a ? "active" : ""}} onClick={() => setAba(a)}>
-              {a === "hoje" ? "📅 Hoje" : a === "historico" ? "📋 Histórico" : a === "bloquear" ? "🚫 Bloquear" : "💈 Barbeiros"}
+              {a === "hoje" ? "Hoje" : a === "historico" ? "Historico" : a === "bloquear" ? "Bloquear" : "Barbeiros"}
             </button>
           ))}
         </div>
-
         {aba === "hoje" && (
           <div className="painel-lista">
             {agHoje.length === 0 ? <p className="painel-vazio">Nenhum agendamento para hoje.</p> : agHoje.map(a => (
               <div key={a.id} className="painel-item">
                 <div className="painel-item-info">
                   <strong>{a.nome}</strong>
-                  <span>{a.horario} — {a.servico} c/ {a.barbeiro}</span>
-                  <small>📱 {a.telefone}</small>
+                  <span>{a.horario} - {a.servico} c/ {a.barbeiro}</span>
+                  <small>{a.telefone}</small>
                 </div>
                 <div className="painel-item-acoes">
                   <span className="painel-status" style={{ background: statusCor[a.status] }}>{a.status}</span>
                   {a.status === "pendente" && <>
-                    <button className="btn-confirmar" onClick={() => mudarStatus(a.id, "confirmado")}>✓</button>
-                    <button className="btn-cancelar" onClick={() => mudarStatus(a.id, "cancelado")}>✗</button>
+                    <button className="btn-confirmar" onClick={() => mudarStatus(a.id, "confirmado")}>V</button>
+                    <button className="btn-cancelar" onClick={() => mudarStatus(a.id, "cancelado")}>X</button>
                   </>}
                 </div>
               </div>
             ))}
           </div>
         )}
-
         {aba === "historico" && (
           <div className="painel-lista">
             {agTodos.length === 0 ? <p className="painel-vazio">Nenhum agendamento ainda.</p> : agTodos.map(a => (
               <div key={a.id} className="painel-item">
                 <div className="painel-item-info">
                   <strong>{a.nome}</strong>
-                  <span>{a.data} às {a.horario} — {a.servico} c/ {a.barbeiro}</span>
-                  <small>📱 {a.telefone}</small>
+                  <span>{a.data} as {a.horario} - {a.servico} c/ {a.barbeiro}</span>
+                  <small>{a.telefone}</small>
                 </div>
                 <div className="painel-item-acoes">
                   <span className="painel-status" style={{ background: statusCor[a.status] }}>{a.status}</span>
@@ -161,7 +153,6 @@ export default function Painel() {
             ))}
           </div>
         )}
-
         {aba === "bloquear" && (
           <div>
             <div className="painel-bloquear-form">
@@ -170,16 +161,15 @@ export default function Painel() {
               <button className="painel-btn" onClick={adicionarBloqueio}>Bloquear</button>
             </div>
             <div className="painel-lista">
-              {bloqueios.length === 0 ? <p className="painel-vazio">Nenhum horário bloqueado.</p> : bloqueios.map(b => (
+              {bloqueios.length === 0 ? <p className="painel-vazio">Nenhum horario bloqueado.</p> : bloqueios.map(b => (
                 <div key={b.id} className="painel-item">
-                  <span>🚫 {b.data} às {b.hora}</span>
-                  <button className="btn-cancelar" onClick={() => removerBloqueio(b.id)}>✗</button>
+                  <span>{b.data} as {b.hora}</span>
+                  <button className="btn-cancelar" onClick={() => removerBloqueio(b.id)}>X</button>
                 </div>
               ))}
             </div>
           </div>
         )}
-
         {aba === "barbeiros" && (
           <div>
             <div className="painel-bloquear-form">
@@ -192,15 +182,15 @@ export default function Painel() {
                   {editando === b ? (
                     <>
                       <input className="painel-input" value={nomeEditado} onChange={e => setNomeEditado(e.target.value)} />
-                      <button className="btn-confirmar" onClick={() => salvarEdicao(b)}>✓</button>
-                      <button className="btn-cancelar" onClick={() => setEditando(null)}>✗</button>
+                      <button className="btn-confirmar" onClick={() => salvarEdicao(b)}>V</button>
+                      <button className="btn-cancelar" onClick={() => setEditando(null)}>X</button>
                     </>
                   ) : (
                     <>
-                      <span>💈 {b}</span>
+                      <span>{b}</span>
                       <div className="painel-item-acoes">
-                        <button className="btn-confirmar" onClick={() => { setEditando(b); setNomeEditado(b); }}>✏️</button>
-                        <button className="btn-cancelar" onClick={() => removerBarbeiro(b)}>✗</button>
+                        <button className="btn-confirmar" onClick={() => { setEditando(b); setNomeEditado(b); }}>Editar</button>
+                        <button className="btn-cancelar" onClick={() => removerBarbeiro(b)}>X</button>
                       </div>
                     </>
                   )}
@@ -209,7 +199,6 @@ export default function Painel() {
             </div>
           </div>
         )}
-
       </div>
     </div>
   );
