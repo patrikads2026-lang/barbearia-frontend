@@ -3,7 +3,7 @@ import "./Agendamento.css";
 
 const API = "https://barbearia-backend-iiyz.onrender.com";
 
-const barbeiros = ["Carlos", "Diego", "Rafael"];
+const barbeiros = ["Carlos", "Thiago", "Adriano"];
 const servicos = [
   { nome: "Corte Masculino", preco: "R$40", duracao: 30 },
   { nome: "Barba", preco: "R$30", duracao: 20 },
