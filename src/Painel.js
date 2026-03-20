@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "./Painel.css";
 
 const API = "https://barbearia-backend-iiyz.onrender.com";
+const HORARIOS = ["09:00","09:30","10:00","10:30","11:00","11:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00"];
 
 export default function Painel() {
   const [usuario, setUsuario] = useState(null);
@@ -9,7 +10,7 @@ export default function Painel() {
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
   const [agendamentos, setAgendamentos] = useState([]);
-  const [aba, setAba] = useState("hoje");
+  const [aba, setAba] = useState("agenda");
   const [bloqueios, setBloqueios] = useState([]);
   const [novoBloqueio, setNovoBloqueio] = useState({ data: "", hora: "" });
   const [barbeiros, setBarbeiros] = useState([]);
@@ -17,6 +18,7 @@ export default function Painel() {
   const [editando, setEditando] = useState(null);
   const [nomeEditado, setNomeEditado] = useState("");
   const [senhaEditada, setSenhaEditada] = useState("");
+  const [dataAgenda, setDataAgenda] = useState(new Date().toISOString().split("T")[0]);
 
   useEffect(() => {
     if (usuario) {
@@ -118,6 +120,10 @@ export default function Painel() {
   const agTodos = [...agFiltrados].sort((a, b) => new Date(b.data) - new Date(a.data));
   const statusCor = { pendente: "#f59e0b", confirmado: "#10b981", cancelado: "#ef4444" };
 
+  // Agenda visual
+  const agDia = agFiltrados.filter(a => a.data === dataAgenda && a.status !== "cancelado");
+  const bloqueiosDia = bloqueios.filter(b => b.data === dataAgenda);
+
   if (!usuario) return (
     <div className="painel-wrap">
       <div className="painel-login">
@@ -127,7 +133,6 @@ export default function Painel() {
         <input className="painel-input" type="password" placeholder="Senha" value={senha} onChange={e => setSenha(e.target.value)} onKeyDown={e => e.key === "Enter" && login()} />
         {erro && <p className="painel-erro">{erro}</p>}
         <button className="painel-btn" onClick={login}>Entrar</button>
-        <small style={{ color: "#444", marginTop: 12, display: "block" }}>Admin: admin / admin123</small>
       </div>
     </div>
   );
@@ -151,31 +156,53 @@ export default function Painel() {
         </div>
 
         <div className="painel-abas">
-          {["hoje", "historico", ...(usuario.tipo === "admin" ? ["bloquear", "barbeiros"] : [])].map(a => (
+          {["agenda", "historico", ...(usuario.tipo === "admin" ? ["bloquear", "barbeiros"] : [])].map(a => (
             <button key={a} className={`painel-aba ${aba === a ? "active" : ""}`} onClick={() => setAba(a)}>
-              {a === "hoje" ? "📅 Hoje" : a === "historico" ? "📋 Histórico" : a === "bloquear" ? "🚫 Bloquear" : "✂ Barbeiros"}
+              {a === "agenda" ? "📅 Agenda" : a === "historico" ? "📋 Histórico" : a === "bloquear" ? "🚫 Bloquear" : "✂ Barbeiros"}
             </button>
           ))}
         </div>
 
-        {aba === "hoje" && (
-          <div className="painel-lista">
-            {agHoje.length === 0 ? <p className="painel-vazio">Nenhum agendamento para hoje.</p> : agHoje.map(a => (
-              <div key={a.id} className="painel-item">
-                <div className="painel-item-info">
-                  <strong>{a.nome}</strong>
-                  <span>{a.horario} — {a.servico} c/ {a.barbeiro}</span>
-                  <small>📱 {a.telefone}</small>
-                </div>
-                <div className="painel-item-acoes">
-                  <span className="painel-status" style={{ background: statusCor[a.status] }}>{a.status}</span>
-                  {a.status === "pendente" && <>
-                    <button className="btn-confirmar" onClick={() => mudarStatus(a.id, "confirmado")}>✓</button>
-                    <button className="btn-cancelar" onClick={() => mudarStatus(a.id, "cancelado")}>✗</button>
-                  </>}
-                </div>
-              </div>
-            ))}
+        {/* AGENDA VISUAL */}
+        {aba === "agenda" && (
+          <div className="ag-passo">
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
+              <h2 style={{ color: "#fff", margin: 0 }}>Grade do dia</h2>
+              <input
+                type="date"
+                className="painel-input"
+                style={{ width: "auto", marginBottom: 0 }}
+                value={dataAgenda}
+                onChange={e => setDataAgenda(e.target.value)}
+              />
+            </div>
+            <div className="agenda-grade">
+              {HORARIOS.map(h => {
+                const ag = agDia.find(a => a.horario === h);
+                const bloqueado = bloqueiosDia.find(b => b.hora === h);
+                const livre = !ag && !bloqueado;
+                return (
+                  <div key={h} className={`agenda-slot ${ag ? "ocupado" : bloqueado ? "bloqueado" : "livre"}`}>
+                    <span className="agenda-hora">{h}</span>
+                    {ag && (
+                      <div className="agenda-info">
+                        <strong>{ag.nome}</strong>
+                        <span>{ag.servico}</span>
+                        <span style={{ color: statusCor[ag.status], fontSize: "0.75rem" }}>{ag.status}</span>
+                        {ag.status === "pendente" && (
+                          <div style={{ display: "flex", gap: 4, marginTop: 4 }}>
+                            <button className="btn-confirmar" style={{ fontSize: "0.75rem", padding: "2px 8px" }} onClick={() => mudarStatus(ag.id, "confirmado")}>✓</button>
+                            <button className="btn-cancelar" style={{ fontSize: "0.75rem", padding: "2px 8px" }} onClick={() => mudarStatus(ag.id, "cancelado")}>✗</button>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    {bloqueado && <span style={{ color: "#ef4444", fontSize: "0.8rem" }}>Bloqueado</span>}
+                    {livre && <span style={{ color: "#10b981", fontSize: "0.8rem" }}>Disponível</span>}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         )}
 
@@ -190,6 +217,10 @@ export default function Painel() {
                 </div>
                 <div className="painel-item-acoes">
                   <span className="painel-status" style={{ background: statusCor[a.status] }}>{a.status}</span>
+                  {a.status === "pendente" && <>
+                    <button className="btn-confirmar" onClick={() => mudarStatus(a.id, "confirmado")}>✓</button>
+                    <button className="btn-cancelar" onClick={() => mudarStatus(a.id, "cancelado")}>✗</button>
+                  </>}
                 </div>
               </div>
             ))}
