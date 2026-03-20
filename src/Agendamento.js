@@ -3,7 +3,7 @@ import "./Agendamento.css";
 
 const API = "https://barbearia-backend-iiyz.onrender.com";
 
-const barbeiros = ["Carlos", "Thiago", "Adriano"];
+const [barbeiros, setBarbeiros] = useState([]);
 const servicos = [
   { nome: "Corte Masculino", preco: "R$40", duracao: 30 },
   { nome: "Barba", preco: "R$30", duracao: 20 },
@@ -37,6 +37,12 @@ export default function Agendamento({ onVoltar }) {
   const [carregando, setCarregando] = useState(false);
   const [horariosOcupados, setHorariosOcupados] = useState([]);
   const dias = getProximos7Dias();
+
+  useEffect(() => {
+  fetch(`${API}/api/barbeiros`)
+    .then(r => r.json())
+    .then(dados => setBarbeiros(dados));
+}, []);
 
   useEffect(() => {
     if (form.barbeiro && form.data) {
