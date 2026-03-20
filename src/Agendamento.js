@@ -99,6 +99,11 @@ export default function Agendamento() {
   return (
     <div className="ag-wrap">
       <div className="ag-card">
+        <button 
+          onClick={() => window.location.href = "/"} 
+            style={{ background: "transparent", border: "none", color: "#666", cursor: "pointer", marginBottom: "16px", fontSize: "0.9rem" }}>
+            ← Voltar ao início
+        </button>
         <h1 className="ag-title">Agendar Horário</h1>
         <div className="ag-steps">
           {["Serviço","Barbeiro","Horário","Dados"].map((s, i) => (
