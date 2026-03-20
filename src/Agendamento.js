@@ -3,14 +3,12 @@ import "./Agendamento.css";
 
 const API = "https://barbearia-backend-iiyz.onrender.com";
 
-const [barbeiros, setBarbeiros] = useState([]);
 const servicos = [
   { nome: "Corte Masculino", preco: "R$40", duracao: 30 },
   { nome: "Barba", preco: "R$30", duracao: 20 },
   { nome: "Corte + Barba", preco: "R$70", duracao: 50 },
 ];
 const horarios = ["09:00","09:30","10:00","10:30","11:00","11:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00"];
-
 const diasSemana = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
 const meses = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
 
@@ -29,21 +27,21 @@ function getProximos7Dias() {
   return dias;
 }
 
-export default function Agendamento({ onVoltar }) {
+export default function Agendamento() {
   const [passo, setPasso] = useState(1);
   const [form, setForm] = useState({ servico: "", barbeiro: "", horario: "", data: "", nome: "", telefone: "" });
   const [confirmado, setConfirmado] = useState(false);
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
   const [horariosOcupados, setHorariosOcupados] = useState([]);
+  const [barbeiros, setBarbeiros] = useState([]);
   const dias = getProximos7Dias();
-  const [barbeiros, setbarbeiros] = useState([]);
-  
+
   useEffect(() => {
-  fetch(`${API}/api/barbeiros`)
-    .then(r => r.json())
-    .then(dados => setBarbeiros(dados));
-}, []);
+    fetch(`${API}/api/barbeiros`)
+      .then(r => r.json())
+      .then(dados => setBarbeiros(dados));
+  }, []);
 
   useEffect(() => {
     if (form.barbeiro && form.data) {
@@ -101,11 +99,7 @@ export default function Agendamento({ onVoltar }) {
   return (
     <div className="ag-wrap">
       <div className="ag-card">
-        <button onClick={onVoltar} className="ag-btn-back" style={{ marginBottom: "16px" }}>
-          ← Voltar ao Menu
-        </button>
         <h1 className="ag-title">Agendar Horário</h1>
-
         <div className="ag-steps">
           {["Serviço","Barbeiro","Horário","Dados"].map((s, i) => (
             <div key={i} className={`ag-step ${passo > i+1 ? "done" : ""} ${passo === i+1 ? "active" : ""}`}>
@@ -154,18 +148,13 @@ export default function Agendamento({ onVoltar }) {
             <h2>Escolha o dia</h2>
             <div className="ag-dias">
               {dias.map(d => (
-                <div
-                  key={d.value}
-                  className={`ag-dia ${form.data === d.value ? "selected" : ""}`}
-                  onClick={() => { salvar("data", d.value); salvar("horario", ""); }}
-                >
+                <div key={d.value} className={`ag-dia ${form.data === d.value ? "selected" : ""}`} onClick={() => { salvar("data", d.value); salvar("horario", ""); }}>
                   <span className="ag-dia-semana">{d.label}</span>
                   <span className="ag-dia-num">{d.dia}</span>
                   <span className="ag-dia-mes">{d.mes}</span>
                 </div>
               ))}
             </div>
-
             {form.data && (
               <>
                 <h2 style={{ marginTop: "24px" }}>Escolha o horário</h2>
@@ -173,20 +162,14 @@ export default function Agendamento({ onVoltar }) {
                   {horarios.map(h => {
                     const ocupado = horariosOcupados.includes(h);
                     return (
-                      <div
-                        key={h}
-                        className={`ag-hora ${form.horario === h ? "selected" : ""} ${ocupado ? "ocupado" : ""}`}
-                        onClick={() => !ocupado && salvar("horario", h)}
-                      >
-                        {h}
-                        {ocupado && <small>ocupado</small>}
+                      <div key={h} className={`ag-hora ${form.horario === h ? "selected" : ""} ${ocupado ? "ocupado" : ""}`} onClick={() => !ocupado && salvar("horario", h)}>
+                        {h}{ocupado && <small>ocupado</small>}
                       </div>
                     );
                   })}
                 </div>
               </>
             )}
-
             <div className="ag-nav">
               <button className="ag-btn-back" onClick={() => setPasso(2)}>Voltar</button>
               <button className="ag-btn" disabled={!form.horario || !form.data} onClick={() => setPasso(4)}>Próximo</button>
