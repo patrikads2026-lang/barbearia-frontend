@@ -37,7 +37,8 @@ export default function Agendamento({ onVoltar }) {
   const [carregando, setCarregando] = useState(false);
   const [horariosOcupados, setHorariosOcupados] = useState([]);
   const dias = getProximos7Dias();
-
+  const [barbeiros, setbarbeiros] = useState([]);
+  
   useEffect(() => {
   fetch(`${API}/api/barbeiros`)
     .then(r => r.json())
