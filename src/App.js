@@ -53,7 +53,7 @@ function Sobre({ onAgendar }) {
   return (
     <section className="sobre">
       <div className="container sobre-grid">
-        <img src="barbearia.jpg" alt="Barbearia" />
+        <img src="/barbearia.jpg" alt="Barbearia" style={{ width: '100%', maxWidth: '450px', borderRadius: '10px' }} />
         <div>
           <h2>Sobre a Bigode Cort's</h2>
           <p>Somos especialistas em cortes masculinos e cuidados com a barba. Nosso objetivo é oferecer uma experiência premium para cada cliente.</p>
